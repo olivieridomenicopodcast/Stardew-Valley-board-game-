@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Stardew Valley – Assistente da Tavolo</title>
+  <meta name="theme-color" content="#2d6a2d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Stardew AI" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Caveat:wght@600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:         #0f2010;
+      --bg2:        #162818;
+      --bg3:        #1e3820;
+      --panel:      #1a3015;
+      --border:     #3a6b2a;
+      --border2:    #4e8c3a;
+      --gold:       #e8b84b;
+      --gold2:      #f5d47a;
+      --green:      #5db84a;
+      --green2:     #8ccf70;
+      --brown:      #8b5a2b;
+      --brown2:     #c4843a;
+      --text:       #f0e8c8;
+      --text2:      #b8d890;
+      --text3:      #8aaa70;
+      --accent:     #ff7c3a;
+      --heart:      #e05050;
+      --sky:        #4a9fd4;
+      --radius:     14px;
+      --radius-sm:  8px;
+      --shadow:     0 4px 20px rgba(0,0,0,0.6);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Crimson Text', Georgia, serif;
+      font-size: 18px;
+      -webkit-tap-highlight-color: transparent;
+      overflow: hidden;
+    }
+
+    /* ========== BACKGROUND GRAIN ========== */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(45,106,45,0.25) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(139,90,43,0.15) 0%, transparent 55%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* Floating pixel crops decoration */
+    body::after {
+      content: '🌽 🍓 🎃 🌻 🥕 🍆 🫐';
+      position: fixed; bottom: -60px; left: 0; right: 0;
+      font-size: 28px; letter-spacing: 30px;
+      opacity: 0.06; pointer-events: none; z-index: 0;
+      animation: floatCrops 40s linear infinite;
+    }
+
+    @keyframes floatCrops {
+      from { transform: translateX(-100px); }
+      to   { transform: translateX(100px); }
+    }
+
+    /* ========== LAYOUT ========== */
+    #app {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      height: 100dvh; height: 100vh;
+      max-width: 860px; margin: 0 auto;
+      padding: 0 12px 12px;
+    }
+
+    /* ========== HEADER ========== */
+    header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 4px 10px;
+      border-bottom: 2px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .header-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--green), var(--brown));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 0 0 3px var(--border2), 0 4px 12px rgba(0,0,0,0.5);
+      flex-shrink: 0;
+      animation: pulse-icon 4s ease-in-out infinite;
+    }
+    @keyframes pulse-icon {
+      0%,100% { box-shadow: 0 0 0 3px var(--border2), 0 4px 12px rgba(0,0,0,0.5); }
+      50%      { box-shadow: 0 0 0 5px var(--green2), 0 4px 20px rgba(93,184,74,0.4); }
+    }
+
+    .header-text h1 {
+      font-family: 'Caveat', cursive;
+      font-size: 1.65rem; font-weight: 700;
+      color: var(--gold);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      line-height: 1;
+    }
+    .header-text p {
+      font-family: 'Crimson Text', serif;
+      font-size: 0.82rem; color: var(--text3);
+      font-style: italic; margin-top: 2px;
+    }
+
+    .status-dot {
+      margin-left: auto; flex-shrink: 0;
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.78rem; color: var(--text3);
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green2);
+      box-shadow: 0 0 6px var(--green2);
+      animation: blink 2.5s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    /* ========== QUICK BUTTONS ========== */
+    .quick-wrap {
+      flex-shrink: 0;
+      padding: 10px 0 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .quick-wrap::-webkit-scrollbar { display: none; }
+
+    .quick-row {
+      display: flex; gap: 8px;
+      width: max-content;
+    }
+
+    .quick-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 9px 14px;
+      background: var(--panel);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      color: var(--text2);
+      font-family: 'Crimson Text', serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.18s ease;
+      -webkit-user-select: none; user-select: none;
+    }
+    .quick-btn:hover, .quick-btn:active {
+      background: var(--bg3);
+      border-color: var(--green2);
+      color: var(--gold2);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(93,184,74,0.25);
+    }
+    .quick-btn .qicon { font-size: 1.1rem; }
+
+    /* ========== CHAT AREA ========== */
+    #chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px 4px;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    #chat::-webkit-scrollbar { width: 4px; }
+    #chat::-webkit-scrollbar-track { background: transparent; }
+    #chat::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    /* Welcome card */
+    .welcome-card {
+      background: linear-gradient(135deg, var(--panel), var(--bg3));
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .welcome-card .wc-title {
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem; color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .welcome-card p {
+      color: var(--text2); font-size: 0.95rem;
+      line-height: 1.5; font-style: italic;
+    }
+    .welcome-card .hearts {
+      font-size: 1.4rem; margin: 10px 0 4px;
+      animation: heartbeat 1.8s ease-in-out infinite;
+    }
+    @keyframes heartbeat {
+      0%,100% { transform: scale(1); }
+      30%      { transform: scale(1.12); }
+      60%      { transform: scale(1.05); }
+    }
+
+    /* Message bubbles */
+    .msg {
+      display: flex; gap: 10px; align-items: flex-start;
+      animation: slideIn 0.25s ease;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg.user { flex-direction: row-reverse; }
+
+    .msg-avatar {
+      width: 36px; height: 36px; flex-shrink: 0;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .msg.user .msg-avatar {
+      background: linear-gradient(135deg, var(--brown), var(--brown2));
+      border: 2px solid var(--brown2);
+    }
+    .msg.ai .msg-avatar {
+      background: linear-gradient(135deg, var(--green), var(--bg3));
+      border: 2px solid var(--green2);
+    }
+
+    .msg-bubble {
+      max-width: min(82%, 540px);
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-size: 1.02rem;
+      line-height: 1.55;
+      box-shadow: var(--shadow);
+    }
+    .msg.user .msg-bubble {
+      background: linear-gradient(135deg, #2a5020, #1e3a16);
+      border: 1.5px solid var(--border2);
+      color: var(--text);
+      border-bottom-right-radius: 4px;
+    }
+    .msg.ai .msg-bubble {
+      background: linear-gradient(135deg, #1a2e10, #162510);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      border-bottom-left-radius: 4px;
+    }
+    .msg-bubble strong, .msg-bubble b {
+      color: var(--gold2);
+      font-weight: 700;
+    }
+    .msg-bubble em, .msg-bubble i {
+      color: var(--green2);
+      font-style: italic;
+    }
+
+    /* Typing indicator */
+    .typing-dots {
+      display: flex; gap: 5px; padding: 4px 2px;
+      align-items: center;
+    }
+    .typing-dots span {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green2);
+      animation: dot-bounce 1.2s ease-in-out infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dot-bounce {
+      0%,80%,100% { transform: translateY(0); opacity: 0.5; }
+      40%          { transform: translateY(-7px); opacity: 1; }
+    }
+
+    /* ========== INPUT AREA ========== */
+    .input-wrap {
+      flex-shrink: 0;
+      display: flex; gap: 10px; align-items: flex-end;
+      padding: 10px 0 0;
+      border-top: 2px solid var(--border);
+    }
+
+    #user-input {
+      flex: 1;
+      background: var(--panel);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      color: var(--text);
+      font-family: 'Crimson Text', serif;
+      font-size: 1rem;
+      resize: none;
+      min-height: 48px; max-height: 130px;
+      outline: none;
+      transition: border-color 0.2s;
+      line-height: 1.4;
+    }
+    #user-input:focus {
+      border-color: var(--green2);
+      box-shadow: 0 0 0 3px rgba(93,184,74,0.15);
+    }
+    #user-input::placeholder { color: var(--text3); font-style: italic; }
+
+    #send-btn {
+      width: 48px; height: 48px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--green), #3d8030);
+      border: none; border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      box-shadow: 0 3px 12px rgba(93,184,74,0.3);
+      transition: all 0.15s ease;
+      color: white;
+    }
+    #send-btn:hover { transform: scale(1.06); box-shadow: 0 4px 16px rgba(93,184,74,0.5); }
+    #send-btn:active { transform: scale(0.96); }
+    #send-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    /* Decorative divider */
+    .season-bar {
+      height: 3px;
+      background: linear-gradient(90deg, 
+        #ff9b9b 0%, #ff9b9b 25%,
+        #ffdf7a 25%, #ffdf7a 50%,
+        #ff8c3a 50%, #ff8c3a 75%,
+        #a8d4f5 75%, #a8d4f5 100%);
+      border-radius: 2px;
+      margin: 2px 0 8px;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 480px) {
+      html { font-size: 16px; }
+      .header-text h1 { font-size: 1.35rem; }
+      .quick-btn { font-size: 0.85rem; padding: 8px 12px; }
+    }
+    @media (min-width: 768px) {
+      #app { padding: 0 20px 16px; }
+      .msg-bubble { font-size: 1.05rem; }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <header>
+    <div class="header-icon">🌾</div>
+    <div class="header-text">
+      <h1>Stardew Valley</h1>
+      <p>Assistente da Tavolo • The Board Game</p>
+    </div>
+    <div class="status-dot">
+      <div class="dot"></div>
+      <span>AI</span>
+    </div>
+  </header>
+
+  <div class="season-bar"></div>
+
+  <!-- Quick buttons -->
+  <div class="quick-wrap">
+    <div class="quick-row">
+      <button class="quick-btn" onclick="ask(this)">
+        <span class="qicon">📅</span> Fasi di un round
+      </button>
+      <button class="quick-btn" onclick="ask(this)">
+        <span class="qicon">⚡</span> Azioni disponibili
+      </button>
+      <button class="quick-btn" onclick="ask(this)">
+        <span class="qicon">❤️</span> Come rivelare un Pacchetto?
+      </button>
+      <button class="quick-btn" onclick="ask(this)">
+        <span class="qicon">🎣</span> Come funziona la pesca?
+      </button>
+      <button class="quick-btn" onclick="ask(this)">
+        <span class="qicon">⛏️</span> Come esploro la Miniera?
+      </button>
+      <button class="quick-btn" onclick="ask(this)">
+        <span class="qicon">🌱</span> Come pianto e annaffio?
+      </button>
+      <button class="quick-btn" onclick="ask(this)">
+        <span class="qicon">🐄</span> Come funzionano gli animali?
+      </button>
+      <button class="quick-btn" onclick="ask(this)">
+        <span class="qicon">🏆</span> Come si vince?
+      </button>
+      <button class="quick-btn" onclick="ask(this)">
+        <span class="qicon">🏠</span> Come costruisco edifici?
+      </button>
+      <button class="quick-btn" onclick="ask(this)">
+        <span class="qicon">💰</span> Effetti di Fine Turno
+      </button>
+    </div>
+  </div>
+
+  <!-- Chat messages -->
+  <div id="chat">
+    <div class="welcome-card">
+      <div class="hearts">🌾 ❤️ 🌾</div>
+      <div class="wc-title">Benvenuto a Stardew Valley!</div>
+      <p>Sono il tuo assistente per la partita sul tavolo. Dimmi tutto ciò di cui hai bisogno: regole, azioni, costi, pacchetti del Centro Comunitario...</p>
+      <p style="margin-top:8px; color: var(--text3); font-size:0.85rem;">Tocca i bottoni in alto o scrivi liberamente qui sotto 👇</p>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="input-wrap">
+    <textarea id="user-input" rows="1" placeholder="Chiedi una regola... (Invio per inviare)" 
+              onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+    <button id="send-btn" onclick="sendMsg()">➤</button>
+  </div>
+
+</div>
+
+<script>
+// ====== CONFIG ======
+const SYSTEM_PROMPT = `Sei un esperto assistente per Stardew Valley: The Board Game (versione italiana). Rispondi SEMPRE in italiano, in modo conciso (1-3 righe per domande semplici). Usa il **grassetto** per tutti i valori numerici, costi, e termini chiave. Usa l'*corsivo* per nomi di luoghi o azioni.
+
+REGOLE COMPLETE DEL GIOCO:
+
+SCOPO: Completare 4 degli 8 Obiettivi del Nonno E ripristinare 6 Stanze del Centro Comunitario (1 Pacchetto per Stanza) prima che si esaurisca il Mazzo della Stagione.
+
+SETUP INIZIALE: Oro collettivo iniziale **3 oro**. Il giocatore iniziale ha il Gettone Animale Domestico. Ogni giocatore sceglie 1 Professione (Plancia Giocatore) e 1 Strumento Iniziale (Annaffiatoio, Zappa, Canna da Pesca o Piccone). Il campo ha **1 Pastinaca** piantata nella seconda casella. Mazzo Stagione: 4 stagioni × (4 Carte Stagione + 1 Carta Fine Stagione). Prima partita: usa solo Carte Stagione Standard.
+
+ROUND: 3 fasi. 1) FASE STAGIONE: il giocatore con Gettone Animale Domestico pesca 1 Carta Stagione e la risolve dall'alto verso il basso. 2) FASE PIANIFICAZIONE: i giocatori discutono, si scambiano liberamente risorse e oggetti (NON in Fase Azione), poi ognuno piazza la pedina in qualsiasi luogo (gratuito, non conta come movimento). 3) FASE AZIONE: a partire dal giocatore iniziale in senso orario. Ogni giocatore fa: AZIONE+AZIONE (nella stessa posizione) oppure AZIONE+MOVIMENTO(1 spazio)+AZIONE. Quando finisce torna alla Fattoria e attiva 1 tipo di Effetto di Fine Turno quante volte vuole.
+
+INVENTARIO (Plancia Giocatore): max **6** risorse, max **2** Oggetti normali, max **2** Miglioramenti Professione, Oggetti Epici illimitati, Amici illimitati, Carte Evento illimitate.
+
+OBIETTIVI DEL NONNO (4 da completare, scalano per numero giocatori):
+- Avere **10 oro** per giocatore
+- Raggiungere fondo Miniera (*Livello 12*)
+- Donare **2 oggetti** al Museo per giocatore (Manufatto o Minerale)
+- Avere **2 animali** per giocatore
+- Avere **3 amici** per giocatore
+- Catturare **1 Pesce Leggendario** per giocatore
+- Costruire **1 edificio** per giocatore
+- Migliorare **2 volte** gli Strumenti Iniziali per giocatore
+
+PACCHETTI CENTRO COMUNITARIO (6 stanze, 1 pacchetto per stanza):
+- *Stanza dei Mestieri*: Foraggio di una stagione o qualsiasi **2** materiali
+- *Dispensa*: Coltivazioni di stagione/Prodotti Animali o Coltivazioni di Qualità/Prodotti Animali
+- *Acquario*: diversi tipi di pesce (Lago, Fiume, Oceano). Pesci Leggendari vanno in qualsiasi pacchetto Pesca
+- *Bacheca*: diversi tipi di prodotti + Gettoni Cuore (richiede **1** Cuore + **1** risorsa per giocatore)
+- *Cassaforte*: quantità di oro (6/8/10 oro × numero giocatori!)
+- *Locale Caldaia*: risorse minerarie (Pietra, Minerali, Carne di Insetto)
+RIVELARE PACCHETTI: spendi Cuori pari al numero di giocatori. Poi rivela la carta a faccia in giù più a sinistra OPPURE sostituisci un pacchetto già rivelato. COMPLETARE: dona risorse pari al numero di giocatori. Completando i primi **5** ottieni Oggetti normali, l'**ultimo** dà un Oggetto Epico.
+
+AZIONI DEI LUOGHI:
+*FATTORIA*: Annaffia coltivazioni (sposta tutte di **1** spazio a destra verso raccolta), Raccoli Prodotti Animali (tira **3** Dadi Animale: ogni dado attiva gli animali corrispondenti, **1** risorsa per attivazione)
+*CITTÀ*: Comprare&Piantare Semi (semi costano **1 oro** ognuno, piantati subito in campo numerato corrispondente; puoi anche vendere risorse qui), Fare Amicizia (pesca **1** Carta Abitante, regala risorsa: se "Ama" guadagni **2** Cuori, risorsa non raffigurata = **1** Cuore; se è il loro compleanno +**1** Cuore extra; regalo odiato = non possibile), Rivelare&Donare ai Pacchetti (Centro Comunitario)
+*MONTAGNA*: Esplorare Miniera (tira **2** Dadi Stardew, usa risultati come riga e colonna sulla Carta Mappa), Costruire Edifici (Legno + Pietra + Oro, richiede Robin)
+*FORESTA*: Pescare al Fiume
+*SPIAGGIA*: Pescare all'Oceano
+*FORGIA*: Aprire Geodi (tira **1** Dado Stardew per geode, consulta tabella sul tabellone), Donare al Museo (Manufatti/Minerali in spazi lettere corrispondenti A-H; colonna piena = **1** Oggetto Epico, massimo **2** Epici)
+*RANCH*: Comprare Animali (richiede Pollaio o Fienile; puoi comprare più animali con **1** azione se hai oro)
+*LAGO (Montagna)*: Pescare al Lago
+
+FORAGGIAMENTO (automatico durante movimento): ogni volta che muovi la pedina lungo un percorso, puoi prendere **1** tessera Foraggio O **1** Albero da un'area adiacente (non entrambe). Non conta come Azione.
+
+PESCA: tira tutti e **3** i Dadi Stardew. Spendi i simboli (Cuore, Junimo, Goccia di Stella) per soddisfare i requisiti delle tessere pesce nel Tracciato Pesca. Devi essere nel luogo di pesca corretto. Ogni dado può essere usato per un solo pesce. I Granchi si catturano scartando **1** Carne di Insetto (extra al lancio dadi). Se non peschi nulla, prendi Spazzatura. Dopo ogni Azione Pesca: fai scorrere il Tracciato a destra e riempi gli spazi dal sacchetto. PESCI LEGGENDARI: **4** nel sacchetto, non vengono mai scartati dal Tracciato per il movimento stagione (rimettili nel sacchetto), usabili per qualsiasi Pacchetto Pesca.
+
+MINIERA: Tira **2** Dadi Stardew, incrocia riga e colonna sulla Carta Mappa corrente. Risultati possibili: Pietra, Carne di Insetto, Minerale, Geode, Scale (scendi al livello successivo), Oggetto, Mostro (attiva abilità mostro sulla Carta Livello), Evento Miniera. La Carta Livello Miniera indica i tipi di Minerali e Geodi disponibili. Livelli da **1** a **12**. Per scendere via Scale: si rivelano automaticamente durante Esplora. Via Effetto Fine Turno: scarta Pietre pari al numero di giocatori.
+
+ANIMALI: richiedono Pollaio (galline) o Fienile (mucche, capre, pecore). Ogni tessera Animale ha un'icona dado: ogni dado che mostra quell'icona attiva l'animale per **1** risorsa. Animali Felici (lato felice) generano risorse di Qualità. Per girare sul lato Felice: Effetto Fine Turno, scarta Cuori pari al numero indicato sull'animale.
+
+EFFETTI DI FINE TURNO (scegli **1** tipo, attivabile quante volte vuoi):
+- Costruire Scale: scarta Pietre pari al n° giocatori → scendi di 1 livello nella Miniera
+- Animali Felici: scarta Cuori indicati sull'animale → giralo sul lato Felice
+- Rimuovere Tessere Joja: scarta **1** Cuore O **5 oro** → rimuovi 1 tessera Joja
+- Migliorare Strumento Iniziale: scarta la risorsa indicata sullo strumento → avanza di livello
+
+STRUMENTI INIZIALI: Livello 0 → 1 → 2 → 3. Ogni livello migliora le capacità (es. Annaffiatoio a livello più alto permette di annaffiare più campi). Si aggiornano come Effetto Fine Turno scartando la risorsa indicata.
+
+CARTA FINE STAGIONE (1 per stagione): rimuovi Foraggi e Alberi dal tabellone e posiziona quelli della nuova stagione. Ogni giocatore pesca **2** Miglioramenti Professione e ne tiene **1** (max **2** in totale, non scambiabili). Poi pesca subito la carta stagione successiva.
+
+TESSERE JOJA: appaiono quando la Carta Stagione lo indica. Modificano o bloccano l'Azione bersaglio. Rimozione: Effetto Fine Turno, scarta **1** Cuore O **5 oro**.
+
+MATRIMONIO: serve l'Oggetto Epico Ciondolo della Sirena + 1 Amico Abitante con l'icona matrimonio. Il Coniuge compie **1** Azione nella sua posizione (prima o dopo le tue azioni, ha accesso al tuo inventario). Il Coniuge NON attiva Effetti Fine Turno.
+
+DIFFICOLTÀ:
+- *Piantare*: solo **4** Obiettivi del Nonno
+- *Contadino Onesto* (Standard): **4** Obiettivi + **6** Pacchetti
+- *Artigiano* (Avanzata): **4** Obiettivi + **6** Pacchetti + nessuna tessera Joja sul tabellone
+
+ORO E CUORI: condivisi fra tutti i giocatori, illimitati come componenti.
+
+IMPORTANTE: Oggetti e Risorse NON si scambiano durante la Fase Azione. Le coltivazioni nei campi non appassiscono al cambio di stagione. La spazzatura non è utile ma può essere scartata in qualsiasi momento. Quando si scende al livello 12 della Miniera, cambia solo la Carta Mappa. Per "Cattura Pesci Leggendari" non serve tenerli in inventario. Per "Fai Amicizia" non è necessario che OGNI giocatore abbia amici: è il totale della squadra.
+
+GIOCO SOLITARIO: stesse regole ma senza limite di Professione. A Fine Stagione pesca **3** Carte da qualsiasi mazzo Professione e tienine **1**.
+
+DURATA RAPIDA: **2** Carte Stagione invece di 4 per stagione; **2** Obiettivi del Nonno; solo **3** Stanze del Centro Comunitario da ripristinare. Circa **40** minuti per giocatore nella versione standard.`;
+
+// ====== STATE ======
+let history = [];
+let isLoading = false;
+
+// ====== FUNCTIONS ======
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 130) + 'px';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMsg();
+  }
+}
+
+function ask(btn) {
+  const text = btn.querySelector('.qicon').nextSibling.textContent.trim();
+  document.getElementById('user-input').value = text;
+  sendMsg();
+}
+
+function addMsg(role, text) {
+  const chat = document.getElementById('chat');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  
+  const icon = role === 'user' ? '🧑‍🌾' : '🌾';
+  div.innerHTML = `
+    <div class="msg-avatar">${icon}</div>
+    <div class="msg-bubble">${formatText(text)}</div>
+  `;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+  return div;
+}
+
+function formatText(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/\n/g, '<br>');
+}
+
+function showTyping() {
+  const chat = document.getElementById('chat');
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+  div.id = 'typing';
+  div.innerHTML = `
+    <div class="msg-avatar">🌾</div>
+    <div class="msg-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>
+  `;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function removeTyping() {
+  document.getElementById('typing')?.remove();
+}
+
+async function sendMsg() {
+  if (isLoading) return;
+  const input = document.getElementById('user-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('send-btn').disabled = true;
+  isLoading = true;
+
+  addMsg('user', text);
+  history.push({ role: 'user', content: text });
+
+  showTyping();
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: history
+      })
+    });
+
+    removeTyping();
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || `HTTP ${res.status}`);
+    }
+
+    const data = await res.json();
+    const reply = data.content?.find(b => b.type === 'text')?.text || 'Nessuna risposta.';
+
+    history.push({ role: 'assistant', content: reply });
+    addMsg('ai', reply);
+
+  } catch (err) {
+    removeTyping();
+    addMsg('ai', `⚠️ Errore: ${err.message}. Controlla la connessione o la chiave API.`);
+  }
+
+  document.getElementById('send-btn').disabled = false;
+  isLoading = false;
+  document.getElementById('user-input').focus();
+}
+</script>
+</body>
+</html>
