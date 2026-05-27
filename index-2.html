@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Stardew Valley – Regolamento Interattivo</title>
+<meta name="theme-color" content="#2d5a1e"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="Stardew Rules"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icon-192.png"/>
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1f0a;--bg2:#122610;--bg3:#1a3314;
+  --panel:#162d10;--panel2:#1e3a18;
+  --border:#2e5c20;--border2:#4a8a32;
+  --gold:#e8b84b;--gold2:#f5d47a;--gold3:#fff3c0;
+  --green:#4caf35;--green2:#7dd660;--green3:#b2f08a;
+  --brown:#8b5a2b;--brown2:#c48030;
+  --red:#d04040;--blue:#4a9fd4;
+  --text:#f0e8c8;--text2:#c8e0a0;--text3:#7aaa50;--text4:#4a7030;
+  --spring:#f8b4c0;--summer:#ffd966;--fall:#e07830;--winter:#a8d4f5;
+  --r:12px;--rs:7px;--shadow:0 4px 20px rgba(0,0,0,0.7);
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Lora',Georgia,serif;font-size:16px;
+  min-height:100vh;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 5%,rgba(45,106,30,0.3) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 70% at 85% 95%,rgba(100,60,20,0.2) 0%,transparent 55%);
+}
+
+/* ===== HEADER ===== */
+header{
+  position:sticky;top:0;z-index:100;
+  background:linear-gradient(180deg,#0d1f0a 0%,#122610 100%);
+  border-bottom:2px solid var(--border);
+  box-shadow:0 2px 20px rgba(0,0,0,0.8);
+}
+.header-inner{
+  max-width:900px;margin:0 auto;
+  padding:12px 16px 10px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.logo{font-size:2rem;flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5))}
+.header-text h1{
+  font-family:'Caveat',cursive;font-size:1.7rem;font-weight:700;
+  color:var(--gold);line-height:1;
+  text-shadow:0 2px 8px rgba(0,0,0,0.6);
+}
+.header-text p{font-size:0.78rem;color:var(--text3);font-style:italic;margin-top:2px}
+.seasons{
+  margin-left:auto;display:flex;gap:5px;align-items:center;flex-shrink:0;
+}
+.season-pill{
+  padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:600;
+  letter-spacing:0.03em;text-transform:uppercase;opacity:0.75;
+}
+.sp{background:rgba(248,180,192,0.2);color:var(--spring);border:1px solid rgba(248,180,192,0.3)}
+.su{background:rgba(255,217,102,0.2);color:var(--summer);border:1px solid rgba(255,217,102,0.3)}
+.fa{background:rgba(224,120,48,0.2);color:var(--fall);border:1px solid rgba(224,120,48,0.3)}
+.wi{background:rgba(168,212,245,0.2);color:var(--winter);border:1px solid rgba(168,212,245,0.3)}
+
+/* ===== SEARCH ===== */
+.search-bar{
+  max-width:900px;margin:0 auto;padding:12px 16px 4px;
+  position:relative;z-index:1;
+}
+.search-bar input{
+  width:100%;padding:11px 16px 11px 42px;
+  background:var(--panel2);border:1.5px solid var(--border);border-radius:var(--r);
+  color:var(--text);font-family:'Lora',serif;font-size:0.95rem;outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s;
+}
+.search-bar input:focus{border-color:var(--green2);box-shadow:0 0 0 3px rgba(76,175,53,0.2)}
+.search-bar input::placeholder{color:var(--text4);font-style:italic}
+.search-icon{position:absolute;left:28px;top:50%;transform:translateY(-50%);font-size:1rem;pointer-events:none}
+
+/* ===== NAV TABS ===== */
+.nav-wrap{
+  position:sticky;top:72px;z-index:90;
+  background:linear-gradient(180deg,#122610,#0d1f0a);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{
+  max-width:900px;margin:0 auto;
+  display:flex;overflow-x:auto;gap:2px;padding:6px 12px;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.nav-inner::-webkit-scrollbar{display:none}
+.tab{
+  flex-shrink:0;padding:8px 14px;border:none;border-radius:var(--rs);
+  background:transparent;color:var(--text3);font-family:'Lora',serif;font-size:0.88rem;
+  cursor:pointer;transition:all 0.18s;white-space:nowrap;
+  display:flex;align-items:center;gap:5px;
+}
+.tab:hover{background:var(--panel2);color:var(--text2)}
+.tab.active{background:var(--panel2);color:var(--gold);border:1px solid var(--border2)}
+
+/* ===== MAIN ===== */
+main{max-width:900px;margin:0 auto;padding:16px 16px 40px;position:relative;z-index:1}
+
+/* ===== SECTION ===== */
+.section{display:none}
+.section.active{display:block}
+
+/* ===== SEARCH RESULTS ===== */
+#search-results{display:none}
+#search-results.active{display:block}
+.search-hit{
+  background:var(--panel);border:1px solid var(--border);border-radius:var(--r);
+  padding:14px 16px;margin-bottom:10px;cursor:pointer;
+  transition:border-color 0.15s,background 0.15s;
+}
+.search-hit:hover{border-color:var(--border2);background:var(--panel2)}
+.search-hit h4{color:var(--gold);font-size:0.9rem;margin-bottom:4px}
+.search-hit p{color:var(--text2);font-size:0.85rem;line-height:1.5}
+.hit-highlight{color:var(--green2);background:rgba(76,175,53,0.15);border-radius:3px;padding:0 2px}
+.no-results{text-align:center;padding:40px;color:var(--text3);font-style:italic}
+
+/* ===== CARD ===== */
+.card{
+  background:var(--panel);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:18px 20px;margin-bottom:14px;
+  box-shadow:var(--shadow);
+}
+.card:hover{border-color:var(--border2)}
+
+/* ===== SECTION TITLE ===== */
+.sec-title{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:18px;padding-bottom:10px;
+  border-bottom:2px solid var(--border);
+}
+.sec-title .icon{font-size:1.8rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5))}
+.sec-title h2{font-family:'Caveat',cursive;font-size:1.8rem;color:var(--gold)}
+
+/* ===== PHASE FLOW ===== */
+.phase-flow{display:flex;flex-direction:column;gap:4px;margin-bottom:18px}
+.phase{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);
+  padding:14px 16px;cursor:pointer;transition:all 0.18s;
+}
+.phase:hover{border-color:var(--border2)}
+.phase.open{border-color:var(--green2)}
+.phase-num{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--green),#2e7020);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:0.9rem;color:white;
+  box-shadow:0 2px 8px rgba(0,0,0,0.4);
+}
+.phase-head{flex:1}
+.phase-head h3{color:var(--gold2);font-size:1rem;font-weight:700}
+.phase-head .sub{color:var(--text3);font-size:0.82rem;margin-top:2px}
+.phase-arrow{color:var(--text3);transition:transform 0.2s;font-size:0.9rem;margin-top:4px}
+.phase.open .phase-arrow{transform:rotate(180deg);color:var(--green2)}
+.phase-body{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.phase.open .phase-body{display:block}
+.phase-body p,.phase-body li{color:var(--text2);font-size:0.92rem;line-height:1.6;margin-bottom:6px}
+.phase-body ul{padding-left:18px}
+.phase-body li{list-style:disc}
+
+/* ===== RULES GRID ===== */
+.rules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:16px}
+.rule-chip{
+  background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);
+  padding:14px 16px;display:flex;flex-direction:column;gap:6px;
+}
+.rule-chip .rc-label{color:var(--text3);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em}
+.rule-chip .rc-value{color:var(--text);font-size:1rem;font-weight:600;line-height:1.35}
+.rule-chip .rc-icon{font-size:1.3rem;margin-bottom:2px}
+
+/* ===== NUMBER BADGE ===== */
+.num{
+  display:inline-block;background:rgba(232,184,75,0.2);
+  color:var(--gold2);border:1px solid rgba(232,184,75,0.4);
+  border-radius:5px;padding:1px 6px;font-weight:700;font-size:0.9em;
+}
+
+/* ===== LOCATION GRID ===== */
+.loc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.loc-card{
+  background:var(--panel2);border:1.5px solid var(--border);border-radius:var(--r);
+  overflow:hidden;cursor:pointer;transition:border-color 0.18s,transform 0.15s;
+}
+.loc-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.loc-card.open{border-color:var(--green2)}
+.loc-header{
+  display:flex;align-items:center;gap:10px;padding:14px 16px;
+}
+.loc-icon{font-size:1.6rem;flex-shrink:0}
+.loc-name{font-family:'Caveat',cursive;font-size:1.25rem;color:var(--gold);line-height:1}
+.loc-sub{color:var(--text3);font-size:0.78rem;margin-top:1px}
+.loc-arrow{margin-left:auto;color:var(--text3);transition:transform 0.2s}
+.loc-card.open .loc-arrow{transform:rotate(180deg);color:var(--green2)}
+.loc-body{
+  display:none;padding:0 16px 14px;
+  border-top:1px solid var(--border);padding-top:12px;
+}
+.loc-card.open .loc-body{display:block}
+.loc-body p,.loc-body li{color:var(--text2);font-size:0.88rem;line-height:1.6;margin-bottom:5px}
+.loc-body ul{padding-left:16px}
+.loc-body li{list-style:disc}
+.action-tag{
+  display:inline-block;background:rgba(76,175,53,0.2);
+  color:var(--green3);border:1px solid rgba(76,175,53,0.3);
+  border-radius:4px;padding:2px 7px;font-size:0.78rem;margin-right:4px;margin-bottom:4px;
+}
+
+/* ===== TABLE ===== */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border);margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:0.87rem}
+th{background:var(--panel2);color:var(--gold);font-weight:700;
+   padding:10px 12px;text-align:left;border-bottom:2px solid var(--border2)}
+td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,0.03)}
+
+/* ===== OBJECTIVE GRID ===== */
+.obj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:16px}
+.obj-card{
+  background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);
+  padding:13px 14px;display:flex;align-items:flex-start;gap:10px;
+}
+.obj-icon{font-size:1.4rem;flex-shrink:0;margin-top:1px}
+.obj-text{color:var(--text2);font-size:0.87rem;line-height:1.5}
+
+/* ===== PACKAGE CARDS ===== */
+.pkg-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.pkg{
+  background:var(--panel2);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:14px 16px;display:flex;align-items:flex-start;gap:12px;
+}
+.pkg-icon{font-size:1.5rem;flex-shrink:0}
+.pkg-name{color:var(--gold2);font-weight:700;font-size:0.95rem;margin-bottom:3px}
+.pkg-req{color:var(--text2);font-size:0.87rem;line-height:1.5}
+
+/* ===== INFO BOX ===== */
+.info-box{
+  background:rgba(76,175,53,0.08);border:1px solid rgba(76,175,53,0.3);
+  border-radius:var(--r);padding:14px 16px;margin-bottom:14px;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.warn-box{
+  background:rgba(232,184,75,0.08);border:1px solid rgba(232,184,75,0.3);
+  border-radius:var(--r);padding:14px 16px;margin-bottom:14px;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.info-box p,.warn-box p{color:var(--text2);font-size:0.88rem;line-height:1.6}
+.box-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px}
+
+/* ===== SUBTITLE ===== */
+h3.sh{
+  color:var(--gold);font-family:'Caveat',cursive;font-size:1.25rem;
+  margin:18px 0 10px;display:flex;align-items:center;gap:7px;
+}
+
+/* ===== MINI BADGE ===== */
+.badge{
+  display:inline-block;border-radius:5px;padding:2px 8px;font-size:0.78rem;font-weight:700;
+}
+.badge-green{background:rgba(76,175,53,0.25);color:var(--green3);border:1px solid rgba(76,175,53,0.4)}
+.badge-gold{background:rgba(232,184,75,0.2);color:var(--gold2);border:1px solid rgba(232,184,75,0.35)}
+.badge-red{background:rgba(208,64,64,0.2);color:#f08080;border:1px solid rgba(208,64,64,0.35)}
+.badge-blue{background:rgba(74,159,212,0.2);color:#90c8f0;border:1px solid rgba(74,159,212,0.35)}
+
+/* ===== QUICK REF (always visible sidebar note) ===== */
+.quick-ref{
+  background:linear-gradient(135deg,#1e3a14,#162c10);
+  border:2px solid var(--border2);border-radius:var(--r);
+  padding:16px 18px;margin-bottom:16px;
+}
+.quick-ref h3{font-family:'Caveat',cursive;color:var(--gold);font-size:1.3rem;margin-bottom:10px}
+.qr-row{display:flex;justify-content:space-between;align-items:center;
+  padding:5px 0;border-bottom:1px solid var(--border);}
+.qr-row:last-child{border-bottom:none}
+.qr-label{color:var(--text3);font-size:0.85rem}
+.qr-val{color:var(--text);font-weight:700;font-size:0.9rem}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:500px){
+  .header-text h1{font-size:1.4rem}
+  .seasons{display:none}
+  main{padding:12px 12px 40px}
+  .rules-grid,.loc-grid,.obj-grid{grid-template-columns:1fr}
+  .card{padding:14px}
+}
+@media(min-width:768px){
+  body{font-size:17px}
+  .phase-body p,.phase-body li{font-size:0.95rem}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">🌾</div>
+    <div class="header-text">
+      <h1>Stardew Valley</h1>
+      <p>Regolamento Interattivo • The Board Game</p>
+    </div>
+    <div class="seasons">
+      <span class="season-pill sp">🌸 Pri</span>
+      <span class="season-pill su">☀️ Est</span>
+      <span class="season-pill fa">🍂 Aut</span>
+      <span class="season-pill wi">❄️ Inv</span>
+    </div>
+  </div>
+</header>
+
+<div class="search-bar">
+  <span class="search-icon">🔍</span>
+  <input type="search" id="search-input" placeholder="Cerca una regola... (pesca, miniera, animali...)" 
+         oninput="doSearch(this.value)"/>
+</div>
+
+<nav class="nav-wrap">
+  <div class="nav-inner">
+    <button class="tab active" onclick="showTab('round',this)">📅 Struttura Round</button>
+    <button class="tab" onclick="showTab('luoghi',this)">🗺️ Luoghi & Azioni</button>
+    <button class="tab" onclick="showTab('pesca',this)">🎣 Pesca</button>
+    <button class="tab" onclick="showTab('miniera',this)">⛏️ Miniera</button>
+    <button class="tab" onclick="showTab('animali',this)">🐄 Animali</button>
+    <button class="tab" onclick="showTab('centro',this)">🏛️ Centro Comunit.</button>
+    <button class="tab" onclick="showTab('obiettivi',this)">🏆 Obiettivi Nonno</button>
+    <button class="tab" onclick="showTab('inventario',this)">🎒 Inventario</button>
+    <button class="tab" onclick="showTab('fine',this)">✅ Fine Turno</button>
+    <button class="tab" onclick="showTab('vittoria',this)">🌟 Vittoria</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- SEARCH RESULTS -->
+<div id="search-results" class="section"></div>
+
+<!-- ======================== ROUND ======================== -->
+<div id="sec-round" class="section active">
+  <div class="sec-title">
+    <span class="icon">📅</span>
+    <h2>Struttura del Round</h2>
+  </div>
+
+  <div class="quick-ref">
+    <h3>⚡ Colpo d'occhio</h3>
+    <div class="qr-row"><span class="qr-label">Oro iniziale collettivo</span><span class="qr-val num">3 oro</span></div>
+    <div class="qr-row"><span class="qr-label">Pastinaca iniziale in campo</span><span class="qr-val">Casella 2</span></div>
+    <div class="qr-row"><span class="qr-label">Carte per stagione</span><span class="qr-val num">4</span> <span class="qr-val">+ 1 Fine Stagione</span></div>
+    <div class="qr-row"><span class="qr-label">Azioni per turno</span><span class="qr-val num">2</span> <span class="qr-val">(± 1 mov. in mezzo)</span></div>
+    <div class="qr-row"><span class="qr-label">Chi pesca la carta stagione</span><span class="qr-val">Chi ha il Gettone Animale</span></div>
+  </div>
+
+  <div class="phase-flow">
+    <div class="phase" onclick="togglePhase(this)">
+      <div class="phase-num">1</div>
+      <div class="phase-head">
+        <h3>Fase Stagione</h3>
+        <div class="sub">Chi ha il Gettone Animale Domestico</div>
+      </div>
+      <div class="phase-arrow">▼</div>
+      <div class="phase-body">
+        <p>Il giocatore con il <strong>Gettone Animale Domestico</strong> pesca la prima carta del Mazzo Stagione e la risolve <strong>dall'alto verso il basso</strong>.</p>
+        <p>Le carte possono aggiungere Tessere Joja, eventi, o modifiche alla mappa.</p>
+      </div>
+    </div>
+
+    <div class="phase" onclick="togglePhase(this)">
+      <div class="phase-num">2</div>
+      <div class="phase-head">
+        <h3>Fase Pianificazione</h3>
+        <div class="sub">Discussione libera + piazzamento pedine</div>
+      </div>
+      <div class="phase-arrow">▼</div>
+      <div class="phase-body">
+        <ul>
+          <li>I giocatori discutono la strategia liberamente.</li>
+          <li>Si possono scambiare <strong>risorse e oggetti</strong> (solo in questa fase, NON durante la Fase Azione).</li>
+          <li>Ognuno piazza la propria pedina in <strong>qualsiasi luogo</strong> — è gratuito e non conta come movimento.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase" onclick="togglePhase(this)">
+      <div class="phase-num">3</div>
+      <div class="phase-head">
+        <h3>Fase Azione</h3>
+        <div class="sub">A turno in senso orario, partendo dal giocatore iniziale</div>
+      </div>
+      <div class="phase-arrow">▼</div>
+      <div class="phase-body">
+        <p>Ogni giocatore esegue <strong>2 Azioni</strong>, secondo una di queste opzioni:</p>
+        <ul>
+          <li><strong>AZIONE + AZIONE</strong> — entrambe nello stesso luogo.</li>
+          <li><strong>AZIONE + MOVIMENTO (1 spazio) + AZIONE</strong> — si può cambiare luogo tra le due azioni.</li>
+        </ul>
+        <p style="margin-top:8px">Dopo le azioni, il giocatore <strong>torna alla Fattoria</strong> e può attivare <strong>1 tipo di Effetto di Fine Turno</strong> quante volte vuole.</p>
+        <div class="info-box" style="margin-top:10px;margin-bottom:0">
+          <span class="box-icon">⚠️</span>
+          <p><strong>NO scambi in Fase Azione!</strong> Risorse e oggetti si cedono solo nella Fase Pianificazione.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sh">📋 Carta Fine Stagione</h3>
+  <div class="card">
+    <p style="color:var(--text2);line-height:1.7">
+      L'ultima carta di ogni stagione è la <strong>Carta Fine Stagione</strong>. Quando viene pescata:
+    </p>
+    <ul style="color:var(--text2);font-size:0.9rem;line-height:1.7;padding-left:18px;margin-top:8px">
+      <li>Rimuovi Foraggi e Alberi dal tabellone e sostituiscili con quelli della nuova stagione.</li>
+      <li>Ogni giocatore pesca <span class="num">2</span> carte Miglioramento Professione e ne tiene <span class="num">1</span> (max <span class="num">2</span> in totale, <strong>non scambiabili</strong>).</li>
+      <li>Si pesca subito la prima carta della stagione successiva.</li>
+    </ul>
+  </div>
+
+  <h3 class="sh">🎮 Setup iniziale</h3>
+  <div class="rules-grid">
+    <div class="rule-chip">
+      <div class="rc-icon">🏡</div>
+      <div class="rc-label">Strumento iniziale</div>
+      <div class="rc-value">Ogni giocatore sceglie 1 tra: Annaffiatoio, Zappa, Canna da Pesca o Piccone</div>
+    </div>
+    <div class="rule-chip">
+      <div class="rc-icon">👤</div>
+      <div class="rc-label">Professione</div>
+      <div class="rc-value">Ogni giocatore sceglie 1 Professione (sulla Plancia Giocatore)</div>
+    </div>
+    <div class="rule-chip">
+      <div class="rc-icon">🥕</div>
+      <div class="rc-label">Campo iniziale</div>
+      <div class="rc-value">1 Pastinaca piantata nella casella 2 del campo</div>
+    </div>
+    <div class="rule-chip">
+      <div class="rc-icon">💰</div>
+      <div class="rc-label">Oro di partenza</div>
+      <div class="rc-value"><span class="num">3 oro</span> collettivi</div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== LUOGHI ======================== -->
+<div id="sec-luoghi" class="section">
+  <div class="sec-title">
+    <span class="icon">🗺️</span>
+    <h2>Luoghi & Azioni</h2>
+  </div>
+
+  <div class="info-box">
+    <span class="box-icon">🚶</span>
+    <p>Il <strong>Foraggiamento</strong> è automatico durante ogni spostamento: puoi prendere <span class="num">1</span> tessera Foraggio <em>oppure</em> <span class="num">1</span> Albero da un'area adiacente al percorso. Non conta come Azione.</p>
+  </div>
+
+  <div class="loc-grid">
+    <div class="loc-card" onclick="toggleLoc(this)">
+      <div class="loc-header">
+        <span class="loc-icon">🏡</span>
+        <div><div class="loc-name">Fattoria</div><div class="loc-sub">La tua casa base</div></div>
+        <span class="loc-arrow">▼</span>
+      </div>
+      <div class="loc-body">
+        <p><span class="action-tag">AZIONE 1</span> <strong>Annaffia coltivazioni</strong> — sposta tutte le piantine di <span class="num">1</span> spazio verso destra (verso la raccolta).</p>
+        <p><span class="action-tag">AZIONE 2</span> <strong>Raccogli Prodotti Animali</strong> — tira <span class="num">3</span> Dadi Animale: ogni dado che mostra il simbolo di un animale lo attiva per <span class="num">1</span> risorsa.</p>
+      </div>
+    </div>
+
+    <div class="loc-card" onclick="toggleLoc(this)">
+      <div class="loc-header">
+        <span class="loc-icon">🏘️</span>
+        <div><div class="loc-name">Città</div><div class="loc-sub">Commercio e amicizia</div></div>
+        <span class="loc-arrow">▼</span>
+      </div>
+      <div class="loc-body">
+        <p><span class="action-tag">AZIONE 1</span> <strong>Compra & Pianta Semi</strong> — ogni seme costa <span class="num">1 oro</span>; viene piantato subito nel campo numerato. Puoi anche <strong>vendere risorse</strong>.</p>
+        <p><span class="action-tag">AZIONE 2</span> <strong>Fai Amicizia</strong> — pesca 1 Carta Abitante, regala una risorsa:</p>
+        <ul>
+          <li>Risorsa che "Ama" → <span class="num">+2 Cuori</span></li>
+          <li>Risorsa non raffigurata → <span class="num">+1 Cuore</span></li>
+          <li>Compleanno dell'abitante → <span class="num">+1 Cuore extra</span></li>
+          <li>Regalo odiato → <strong>non possibile</strong></li>
+        </ul>
+        <p><span class="action-tag">AZIONE 3</span> <strong>Rivela/Dona Pacchetti</strong> al Centro Comunitario.</p>
+      </div>
+    </div>
+
+    <div class="loc-card" onclick="toggleLoc(this)">
+      <div class="loc-header">
+        <span class="loc-icon">⛰️</span>
+        <div><div class="loc-name">Montagna</div><div class="loc-sub">Miniera & costruzioni</div></div>
+        <span class="loc-arrow">▼</span>
+      </div>
+      <div class="loc-body">
+        <p><span class="action-tag">AZIONE 1</span> <strong>Esplora Miniera</strong> — tira <span class="num">2</span> Dadi Stardew, usa i risultati come riga e colonna sulla Carta Mappa.</p>
+        <p><span class="action-tag">AZIONE 2</span> <strong>Costruisci Edifici</strong> — richiede Robin + risorse (Legno + Pietra + Oro).</p>
+        <p><span class="action-tag">LAGO</span> (sottozona) — <strong>Pesca al Lago</strong>.</p>
+      </div>
+    </div>
+
+    <div class="loc-card" onclick="toggleLoc(this)">
+      <div class="loc-header">
+        <span class="loc-icon">🌲</span>
+        <div><div class="loc-name">Foresta</div><div class="loc-sub">Pesca al fiume</div></div>
+        <span class="loc-arrow">▼</span>
+      </div>
+      <div class="loc-body">
+        <p><span class="action-tag">AZIONE</span> <strong>Pesca al Fiume</strong> — usa i dadi pesca. Vedi scheda Pesca per i dettagli.</p>
+      </div>
+    </div>
+
+    <div class="loc-card" onclick="toggleLoc(this)">
+      <div class="loc-header">
+        <span class="loc-icon">🏖️</span>
+        <div><div class="loc-name">Spiaggia</div><div class="loc-sub">Pesca all'oceano</div></div>
+        <span class="loc-arrow">▼</span>
+      </div>
+      <div class="loc-body">
+        <p><span class="action-tag">AZIONE</span> <strong>Pesca all'Oceano</strong> — usa i dadi pesca. Vedi scheda Pesca per i dettagli.</p>
+      </div>
+    </div>
+
+    <div class="loc-card" onclick="toggleLoc(this)">
+      <div class="loc-header">
+        <span class="loc-icon">🔨</span>
+        <div><div class="loc-name">Forgia</div><div class="loc-sub">Geodi & Museo</div></div>
+        <span class="loc-arrow">▼</span>
+      </div>
+      <div class="loc-body">
+        <p><span class="action-tag">AZIONE 1</span> <strong>Apri Geodi</strong> — tira <span class="num">1</span> Dado Stardew per geode, consulta la tabella sul tabellone.</p>
+        <p><span class="action-tag">AZIONE 2</span> <strong>Dona al Museo</strong> — metti Manufatti/Minerali negli spazi lettere (A–H). Se una colonna si riempie → <span class="num">1</span> Oggetto Epico (max <span class="num">2</span> totali da Museo).</p>
+      </div>
+    </div>
+
+    <div class="loc-card" onclick="toggleLoc(this)">
+      <div class="loc-header">
+        <span class="loc-icon">🐓</span>
+        <div><div class="loc-name">Ranch</div><div class="loc-sub">Acquisto animali</div></div>
+        <span class="loc-arrow">▼</span>
+      </div>
+      <div class="loc-body">
+        <p><span class="action-tag">AZIONE</span> <strong>Compra Animali</strong> — richiede Pollaio (per galline) o Fienile (mucche, capre, pecore). Con un'unica azione puoi comprare più animali se hai oro sufficiente.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== PESCA ======================== -->
+<div id="sec-pesca" class="section">
+  <div class="sec-title">
+    <span class="icon">🎣</span>
+    <h2>Pesca</h2>
+  </div>
+
+  <div class="card">
+    <h3 class="sh" style="margin-top:0">🎲 Come funziona</h3>
+    <ol style="color:var(--text2);font-size:0.92rem;line-height:1.8;padding-left:20px">
+      <li>Devi trovarti nel <strong>luogo di pesca corretto</strong> (Foresta = Fiume, Spiaggia = Oceano, Lago in Montagna = Lago).</li>
+      <li>Tira tutti e <span class="num">3</span> i Dadi Stardew.</li>
+      <li>Spendi i simboli ottenuti (<strong>Cuore ❤️, Junimo 🟢, Goccia di Stella ⭐</strong>) per soddisfare i requisiti delle tessere pesce nel Tracciato Pesca.</li>
+      <li>Ogni dado può essere usato per <strong>un solo pesce</strong>.</li>
+      <li>Se non peschi nulla → prendi <strong>Spazzatura</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="rules-grid">
+    <div class="rule-chip">
+      <div class="rc-icon">🦀</div>
+      <div class="rc-label">Granchi</div>
+      <div class="rc-value">Si catturano scartando <span class="num">1</span> Carne di Insetto (extra rispetto al lancio dadi)</div>
+    </div>
+    <div class="rule-chip">
+      <div class="rc-icon">🔄</div>
+      <div class="rc-label">Dopo ogni Azione Pesca</div>
+      <div class="rc-value">Fai scorrere il Tracciato a destra e riempi gli spazi vuoti dal sacchetto</div>
+    </div>
+    <div class="rule-chip">
+      <div class="rc-icon">✨</div>
+      <div class="rc-label">Pesci Leggendari (<span class="num">4</span> totali)</div>
+      <div class="rc-value">Non vengono mai scartati dal Tracciato → tornano nel sacchetto. Usabili per <strong>qualsiasi</strong> Pacchetto Pesca</div>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <span class="box-icon">⚠️</span>
+    <p>Per l'obiettivo "Cattura Pesci Leggendari" <strong>non serve tenerli in inventario</strong>: basta averli catturati.</p>
+  </div>
+</div>
+
+<!-- ======================== MINIERA ======================== -->
+<div id="sec-miniera" class="section">
+  <div class="sec-title">
+    <span class="icon">⛏️</span>
+    <h2>Miniera</h2>
+  </div>
+
+  <div class="card">
+    <h3 class="sh" style="margin-top:0">🎲 Come si esplora</h3>
+    <p style="color:var(--text2);line-height:1.7">Tira <span class="num">2</span> Dadi Stardew. Usa i risultati come <strong>riga e colonna</strong> sulla Carta Mappa del livello attuale. Il risultato può essere:</p>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Risultato</th><th>Effetto</th></tr></thead>
+      <tbody>
+        <tr><td>⛏️ <strong>Pietra</strong></td><td>Ottieni Pietre</td></tr>
+        <tr><td>🐛 <strong>Carne di Insetto</strong></td><td>Ottieni Carne di Insetto</td></tr>
+        <tr><td>💎 <strong>Minerale</strong></td><td>Ottieni il Minerale del livello corrente</td></tr>
+        <tr><td>🪨 <strong>Geode</strong></td><td>Ottieni un Geode (da aprire in Forgia)</td></tr>
+        <tr><td>🪜 <strong>Scale</strong></td><td>Scendi automaticamente al livello successivo</td></tr>
+        <tr><td>🎁 <strong>Oggetto</strong></td><td>Ottieni un oggetto speciale</td></tr>
+        <tr><td>👾 <strong>Mostro</strong></td><td>Attiva l'abilità mostro sulla Carta Livello</td></tr>
+        <tr><td>⚡ <strong>Evento Miniera</strong></td><td>Risolvi l'evento indicato</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="rules-grid">
+    <div class="rule-chip">
+      <div class="rc-icon">🪜</div>
+      <div class="rc-label">Livelli totali</div>
+      <div class="rc-value">Da <span class="num">1</span> a <span class="num">12</span> (obiettivo: raggiungere il fondo)</div>
+    </div>
+    <div class="rule-chip">
+      <div class="rc-icon">⬇️</div>
+      <div class="rc-label">Scendere via Scale (Fine Turno)</div>
+      <div class="rc-value">Scarta Pietre pari al <strong>numero di giocatori</strong> → scendi di 1 livello</div>
+    </div>
+    <div class="rule-chip">
+      <div class="rc-icon">🗺️</div>
+      <div class="rc-label">Livello 12</div>
+      <div class="rc-value">Cambia solo la Carta Mappa. Obiettivo raggiunto!</div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== ANIMALI ======================== -->
+<div id="sec-animali" class="section">
+  <div class="sec-title">
+    <span class="icon">🐄</span>
+    <h2>Animali</h2>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Edificio necessario</th><th>Animali</th></tr></thead>
+      <tbody>
+        <tr><td>🐣 <strong>Pollaio</strong></td><td>Galline</td></tr>
+        <tr><td>🏚️ <strong>Fienile</strong></td><td>Mucche, Capre, Pecore</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 class="sh" style="margin-top:0">🎲 Raccolta prodotti (in Fattoria)</h3>
+    <p style="color:var(--text2);line-height:1.7">Tira <span class="num">3</span> Dadi Animale. Ogni dado che mostra l'icona di un animale lo <strong>attiva</strong> → ottieni <span class="num">1</span> risorsa per quell'animale.</p>
+    <p style="color:var(--text2);line-height:1.7;margin-top:8px"><strong>Animali Felici</strong> (lato felice) generano <strong>risorse di Qualità</strong>.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="sh" style="margin-top:0">❤️ Rendere gli animali Felici (Effetto Fine Turno)</h3>
+    <p style="color:var(--text2);line-height:1.7">Scarta i Cuori indicati sull'animale → giralo sul <strong>lato Felice</strong>.</p>
+  </div>
+</div>
+
+<!-- ======================== CENTRO ======================== -->
+<div id="sec-centro" class="section">
+  <div class="sec-title">
+    <span class="icon">🏛️</span>
+    <h2>Centro Comunitario</h2>
+  </div>
+
+  <div class="info-box">
+    <span class="box-icon">🎯</span>
+    <p>Devi completare <span class="num">6</span> Stanze (1 Pacchetto per stanza) per vincere. Ogni Stanza ha una carta coperta che va rivelata prima di essere completata.</p>
+  </div>
+
+  <h3 class="sh">📦 Come rivelare un Pacchetto</h3>
+  <div class="card">
+    <p style="color:var(--text2);line-height:1.7">Azione nella <strong>Città</strong>: spendi Cuori pari al <strong>numero di giocatori</strong>. Poi:</p>
+    <ul style="color:var(--text2);font-size:0.9rem;line-height:1.7;padding-left:18px;margin-top:6px">
+      <li>Rivela la carta a faccia in giù <strong>più a sinistra</strong>, oppure</li>
+      <li>Sostituisci un Pacchetto già rivelato.</li>
+    </ul>
+  </div>
+
+  <h3 class="sh">✅ Come completare un Pacchetto</h3>
+  <div class="card">
+    <p style="color:var(--text2);line-height:1.7">Azione nella <strong>Città</strong>: dona le risorse richieste, in quantità pari al <strong>numero di giocatori</strong>.</p>
+    <ul style="color:var(--text2);font-size:0.9rem;line-height:1.7;padding-left:18px;margin-top:6px">
+      <li>Primi <span class="num">5</span> pacchetti completati → <span class="badge badge-green">Oggetto Normale</span></li>
+      <li>Ultimo (<span class="num">6°</span>) pacchetto completato → <span class="badge badge-gold">Oggetto Epico</span></li>
+    </ul>
+  </div>
+
+  <h3 class="sh">🏠 Le 6 Stanze</h3>
+  <div class="pkg-list">
+    <div class="pkg">
+      <span class="pkg-icon">🔧</span>
+      <div>
+        <div class="pkg-name">Stanza dei Mestieri</div>
+        <div class="pkg-req">Foraggio di una stagione <em>oppure</em> qualsiasi <span class="num">2</span> materiali</div>
+      </div>
+    </div>
+    <div class="pkg">
+      <span class="pkg-icon">🥕</span>
+      <div>
+        <div class="pkg-name">Dispensa</div>
+        <div class="pkg-req">Coltivazioni di stagione/Prodotti Animali <em>oppure</em> Coltivazioni di Qualità/Prodotti Animali</div>
+      </div>
+    </div>
+    <div class="pkg">
+      <span class="pkg-icon">🐟</span>
+      <div>
+        <div class="pkg-name">Acquario</div>
+        <div class="pkg-req">Pesci di diversi tipi (Lago, Fiume, Oceano). I Pesci Leggendari vanno in qualsiasi Pacchetto Pesca.</div>
+      </div>
+    </div>
+    <div class="pkg">
+      <span class="pkg-icon">📌</span>
+      <div>
+        <div class="pkg-name">Bacheca</div>
+        <div class="pkg-req">Diversi prodotti + <span class="num">1</span> Cuore + <span class="num">1</span> risorsa per giocatore</div>
+      </div>
+    </div>
+    <div class="pkg">
+      <span class="pkg-icon">💰</span>
+      <div>
+        <div class="pkg-name">Cassaforte</div>
+        <div class="pkg-req">Oro — quantità: <span class="num">6/8/10 oro</span> × numero di giocatori</div>
+      </div>
+    </div>
+    <div class="pkg">
+      <span class="pkg-icon">⚙️</span>
+      <div>
+        <div class="pkg-name">Locale Caldaia</div>
+        <div class="pkg-req">Risorse minerarie: Pietra, Minerali, Carne di Insetto</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== OBIETTIVI ======================== -->
+<div id="sec-obiettivi" class="section">
+  <div class="sec-title">
+    <span class="icon">🏆</span>
+    <h2>Obiettivi del Nonno</h2>
+  </div>
+
+  <div class="warn-box">
+    <span class="box-icon">📊</span>
+    <p>Devono essere completati <span class="num">4</span> degli <span class="num">8</span> obiettivi. Le quantità <strong>scalano per numero di giocatori</strong>.</p>
+  </div>
+
+  <div class="obj-grid">
+    <div class="obj-card"><span class="obj-icon">💰</span><div class="obj-text">Avere <span class="num">10 oro</span> per giocatore</div></div>
+    <div class="obj-card"><span class="obj-icon">⛏️</span><div class="obj-text">Raggiungere il fondo della Miniera (<span class="num">Livello 12</span>)</div></div>
+    <div class="obj-card"><span class="obj-icon">🏺</span><div class="obj-text">Donare <span class="num">2 oggetti</span> al Museo per giocatore (Manufatto o Minerale)</div></div>
+    <div class="obj-card"><span class="obj-icon">🐄</span><div class="obj-text">Avere <span class="num">2 animali</span> per giocatore</div></div>
+    <div class="obj-card"><span class="obj-icon">❤️</span><div class="obj-text">Avere <span class="num">3 amici</span> per giocatore (totale di squadra)</div></div>
+    <div class="obj-card"><span class="obj-icon">✨</span><div class="obj-text">Catturare <span class="num">1 Pesce Leggendario</span> per giocatore</div></div>
+    <div class="obj-card"><span class="obj-icon">🏗️</span><div class="obj-text">Costruire <span class="num">1 edificio</span> per giocatore</div></div>
+    <div class="obj-card"><span class="obj-icon">🔧</span><div class="obj-text">Migliorare <span class="num">2 volte</span> gli Strumenti Iniziali per giocatore</div></div>
+  </div>
+</div>
+
+<!-- ======================== INVENTARIO ======================== -->
+<div id="sec-inventario" class="section">
+  <div class="sec-title">
+    <span class="icon">🎒</span>
+    <h2>Inventario</h2>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Slot</th><th>Massimo</th></tr></thead>
+      <tbody>
+        <tr><td>💎 Risorse</td><td><span class="num">6</span></td></tr>
+        <tr><td>📦 Oggetti normali</td><td><span class="num">2</span></td></tr>
+        <tr><td>🔧 Miglioramenti Professione</td><td><span class="num">2</span> (non scambiabili)</td></tr>
+        <tr><td>⭐ Oggetti Epici</td><td>Illimitati</td></tr>
+        <tr><td>❤️ Amici</td><td>Illimitati</td></tr>
+        <tr><td>📝 Carte Evento</td><td>Illimitate</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">💒 Matrimonio</h3>
+  <div class="card">
+    <p style="color:var(--text2);line-height:1.7">Serve: <strong>Oggetto Epico Ciondolo della Sirena</strong> + <strong>1 Amico Abitante</strong> con icona matrimonio.</p>
+    <p style="color:var(--text2);line-height:1.7;margin-top:8px">Il Coniuge compie <span class="num">1</span> Azione nella sua posizione (prima o dopo le tue azioni) con accesso al tuo inventario. <strong>Non attiva Effetti di Fine Turno.</strong></p>
+  </div>
+
+  <h3 class="sh">🃏 Tessere Joja</h3>
+  <div class="card">
+    <p style="color:var(--text2);line-height:1.7">Appaiono quando la Carta Stagione lo indica. Modificano o <strong>bloccano</strong> l'Azione bersaglio.</p>
+    <p style="color:var(--text2);line-height:1.7;margin-top:6px"><strong>Rimozione (Effetto Fine Turno):</strong> scarta <span class="num">1 Cuore</span> <em>oppure</em> <span class="num">5 oro</span>.</p>
+  </div>
+</div>
+
+<!-- ======================== FINE TURNO ======================== -->
+<div id="sec-fine" class="section">
+  <div class="sec-title">
+    <span class="icon">✅</span>
+    <h2>Effetti di Fine Turno</h2>
+  </div>
+
+  <div class="info-box">
+    <span class="box-icon">ℹ️</span>
+    <p>Dopo le Azioni, torna alla Fattoria. Scegli <strong>1 tipo</strong> di Effetto di Fine Turno e attivalo <strong>quante volte vuoi</strong> (finché hai risorse).</p>
+  </div>
+
+  <div class="pkg-list">
+    <div class="pkg">
+      <span class="pkg-icon">🪜</span>
+      <div>
+        <div class="pkg-name">Costruire Scale (Miniera)</div>
+        <div class="pkg-req">Scarta Pietre pari al <span class="num">n° giocatori</span> → scendi di 1 livello</div>
+      </div>
+    </div>
+    <div class="pkg">
+      <span class="pkg-icon">😊</span>
+      <div>
+        <div class="pkg-name">Animali Felici</div>
+        <div class="pkg-req">Scarta Cuori indicati sull'animale → giralo sul lato Felice (produce risorse di Qualità)</div>
+      </div>
+    </div>
+    <div class="pkg">
+      <span class="pkg-icon">🏪</span>
+      <div>
+        <div class="pkg-name">Rimuovere Tessera Joja</div>
+        <div class="pkg-req">Scarta <span class="num">1 Cuore</span> <em>oppure</em> <span class="num">5 oro</span> → rimuovi 1 tessera Joja</div>
+      </div>
+    </div>
+    <div class="pkg">
+      <span class="pkg-icon">⬆️</span>
+      <div>
+        <div class="pkg-name">Migliorare Strumento Iniziale</div>
+        <div class="pkg-req">Scarta la risorsa indicata sullo strumento → avanza di livello (0→1→2→3)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== VITTORIA ======================== -->
+<div id="sec-vittoria" class="section">
+  <div class="sec-title">
+    <span class="icon">🌟</span>
+    <h2>Condizioni di Vittoria</h2>
+  </div>
+
+  <div class="info-box">
+    <span class="box-icon">🎯</span>
+    <p>Vincete (cooperativo!) se completate <strong>entrambi</strong> gli obiettivi prima che si esaurisca il Mazzo Stagione.</p>
+  </div>
+
+  <div class="rules-grid">
+    <div class="rule-chip" style="border-color:var(--gold);background:rgba(232,184,75,0.07)">
+      <div class="rc-icon">🏆</div>
+      <div class="rc-label">Obiettivo 1</div>
+      <div class="rc-value">Completare <span class="num">4</span> degli <span class="num">8</span> Obiettivi del Nonno</div>
+    </div>
+    <div class="rule-chip" style="border-color:var(--green2);background:rgba(76,175,53,0.07)">
+      <div class="rc-icon">🏛️</div>
+      <div class="rc-label">Obiettivo 2</div>
+      <div class="rc-value">Ripristinare <span class="num">6</span> Stanze del Centro Comunitario (<span class="num">1</span> Pacchetto per stanza)</div>
+    </div>
+  </div>
+
+  <h3 class="sh">⚖️ Livelli di difficoltà</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Difficoltà</th><th>Condizioni</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-green">Piantare</span></td>
+          <td>Solo <span class="num">4</span> Obiettivi del Nonno (no Centro Comunitario)</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-gold">Contadino Onesto</span> ⭐ Standard</td>
+          <td><span class="num">4</span> Obiettivi + <span class="num">6</span> Pacchetti Centro</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-red">Artigiano</span> 🔥 Avanzata</td>
+          <td><span class="num">4</span> Obiettivi + <span class="num">6</span> Pacchetti + nessuna Tessera Joja sul tabellone</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">⚡ Modalità Rapida</h3>
+  <div class="card">
+    <ul style="color:var(--text2);font-size:0.9rem;line-height:1.8;padding-left:18px">
+      <li><span class="num">2</span> Carte Stagione invece di 4 per stagione</li>
+      <li><span class="num">2</span> Obiettivi del Nonno</li>
+      <li>Solo <span class="num">3</span> Stanze del Centro Comunitario</li>
+      <li>Durata: circa <span class="num">40 minuti</span> per giocatore nella versione standard</li>
+    </ul>
+  </div>
+
+  <h3 class="sh">🧑 Gioco in Solitario</h3>
+  <div class="card">
+    <p style="color:var(--text2);line-height:1.7">Stesse regole base, ma senza limite di Professione iniziale. A Fine Stagione: pesca <span class="num">3</span> carte Professione e tienine <span class="num">1</span>.</p>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ===== TAB NAVIGATION =====
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  btn.classList.add('active');
+  document.getElementById('search-results').classList.remove('active');
+  document.getElementById('search-input').value = '';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ===== ACCORDIONS =====
+function togglePhase(el) {
+  el.classList.toggle('open');
+}
+function toggleLoc(el) {
+  el.classList.toggle('open');
+}
+
+// ===== SEARCH DATA =====
+const searchData = [
+  {section:'round', title:'Struttura del Round', text:'Il round si divide in 3 fasi: Fase Stagione (chi ha il gettone animale pesca la carta stagione), Fase Pianificazione (discussione e scambio risorse, piazzamento pedine), Fase Azione (2 azioni per giocatore, in senso orario). Dopo le azioni si torna alla Fattoria per gli Effetti di Fine Turno.'},
+  {section:'round', title:'Setup iniziale', text:'3 oro collettivi di partenza. 1 Pastinaca piantata in casella 2. Ogni giocatore sceglie 1 Professione e 1 Strumento Iniziale (Annaffiatoio, Zappa, Canna da Pesca o Piccone).'},
+  {section:'round', title:'Scambi risorse', text:'Gli scambi di risorse e oggetti si fanno SOLO nella Fase Pianificazione. Non è possibile scambiare durante la Fase Azione.'},
+  {section:'round', title:'Carta Fine Stagione', text:'Rimuovi Foraggi e Alberi, sostituiscili con quelli della nuova stagione. Ogni giocatore pesca 2 Miglioramenti Professione e ne tiene 1 (max 2 totali, non scambiabili). Poi pesca la carta stagione successiva.'},
+  {section:'round', title:'Foraggiamento', text:'Automatico durante il movimento: puoi prendere 1 tessera Foraggio O 1 Albero da un\'area adiacente al percorso. Non conta come Azione.'},
+  {section:'luoghi', title:'Fattoria - Annaffia coltivazioni', text:'Sposta tutte le piantine di 1 spazio verso destra (verso la raccolta). Ogni annaffiatura fa avanzare tutte le coltivazioni.'},
+  {section:'luoghi', title:'Fattoria - Prodotti Animali', text:'Tira 3 Dadi Animale: ogni dado che mostra il simbolo di un animale lo attiva per 1 risorsa. Animali Felici danno risorse di Qualità.'},
+  {section:'luoghi', title:'Città - Comprare semi', text:'Ogni seme costa 1 oro. Si piantano subito nel campo numerato corrispondente. Puoi anche vendere risorse in Città.'},
+  {section:'luoghi', title:'Città - Fare Amicizia', text:'Pesca 1 Carta Abitante, regala una risorsa. Risorsa che ama = +2 Cuori. Risorsa non raffigurata = +1 Cuore. Compleanno = +1 Cuore extra. Regalo odiato = non possibile.'},
+  {section:'luoghi', title:'Montagna - Miniera', text:'Tira 2 Dadi Stardew, usa i risultati come riga e colonna sulla Carta Mappa. Livelli da 1 a 12.'},
+  {section:'luoghi', title:'Forgia - Aprire Geodi', text:'Tira 1 Dado Stardew per geode, consulta la tabella sul tabellone per il risultato.'},
+  {section:'luoghi', title:'Forgia - Museo', text:'Dona Manufatti/Minerali negli spazi lettere A-H. Se una colonna si riempie ottieni 1 Oggetto Epico (massimo 2 Epici totali dal Museo).'},
+  {section:'luoghi', title:'Ranch - Comprare Animali', text:'Richiede Pollaio (galline) o Fienile (mucche, capre, pecore). Con un\'unica azione puoi comprare più animali se hai oro sufficiente.'},
+  {section:'pesca', title:'Come pescare', text:'Tira tutti e 3 i Dadi Stardew. Spendi i simboli (Cuore, Junimo, Goccia di Stella) per soddisfare i requisiti delle tessere pesce nel Tracciato Pesca. Devi essere nel luogo corretto. Ogni dado per un solo pesce. Nessun risultato = Spazzatura.'},
+  {section:'pesca', title:'Granchi', text:'Si catturano scartando 1 Carne di Insetto come extra rispetto al lancio dadi.'},
+  {section:'pesca', title:'Pesci Leggendari', text:'4 totali nel sacchetto. Non vengono mai scartati dal Tracciato (tornano nel sacchetto). Usabili per qualsiasi Pacchetto Pesca. Per l\'obiettivo non serve tenerli in inventario.'},
+  {section:'pesca', title:'Dopo ogni Pesca', text:'Fai scorrere il Tracciato Pesca a destra e riempi gli spazi vuoti dal sacchetto.'},
+  {section:'miniera', title:'Esplorare la Miniera', text:'Tira 2 Dadi Stardew, incrocia riga e colonna sulla Carta Mappa. Possibili risultati: Pietra, Carne di Insetto, Minerale, Geode, Scale (scendi), Oggetto, Mostro, Evento Miniera.'},
+  {section:'miniera', title:'Scendere di livello', text:'Via Scale trovate esplorando (automatico), oppure via Effetto Fine Turno scartando Pietre pari al numero di giocatori.'},
+  {section:'animali', title:'Raccolta prodotti animali', text:'Tira 3 Dadi Animale in Fattoria. Ogni dado con l\'icona dell\'animale lo attiva per 1 risorsa. Animali Felici danno risorse di Qualità.'},
+  {section:'animali', title:'Animali Felici', text:'Effetto Fine Turno: scarta i Cuori indicati sull\'animale e giralo sul lato Felice. Gli animali felici producono risorse di Qualità.'},
+  {section:'animali', title:'Acquistare animali', text:'Galline richiedono Pollaio. Mucche, capre, pecore richiedono Fienile. Si comprano al Ranch con una singola Azione.'},
+  {section:'centro', title:'Centro Comunitario - come rivelare', text:'Azione in Città: spendi Cuori pari al numero di giocatori. Rivela la carta a faccia in giù più a sinistra OPPURE sostituisci un Pacchetto già rivelato.'},
+  {section:'centro', title:'Centro Comunitario - come completare', text:'Azione in Città: dona le risorse richieste, in quantità pari al numero di giocatori. Primi 5 completati = Oggetto Normale. Il 6° = Oggetto Epico.'},
+  {section:'centro', title:'Stanza dei Mestieri', text:'Richiede Foraggio di una stagione oppure qualsiasi 2 materiali.'},
+  {section:'centro', title:'Dispensa', text:'Richiede Coltivazioni di stagione/Prodotti Animali oppure Coltivazioni di Qualità/Prodotti Animali.'},
+  {section:'centro', title:'Acquario', text:'Richiede pesci di diversi tipi (Lago, Fiume, Oceano). I Pesci Leggendari vanno in qualsiasi Pacchetto Pesca.'},
+  {section:'centro', title:'Bacheca', text:'Richiede diversi prodotti + 1 Cuore + 1 risorsa per giocatore.'},
+  {section:'centro', title:'Cassaforte', text:'Richiede oro: 6/8/10 oro × numero di giocatori.'},
+  {section:'centro', title:'Locale Caldaia', text:'Richiede risorse minerarie: Pietra, Minerali, Carne di Insetto.'},
+  {section:'obiettivi', title:'Obiettivi del Nonno (lista)', text:'Avere 10 oro per giocatore. Raggiungere Livello 12 Miniera. Donare 2 oggetti al Museo per giocatore. Avere 2 animali per giocatore. Avere 3 amici per giocatore. Catturare 1 Pesce Leggendario per giocatore. Costruire 1 edificio per giocatore. Migliorare 2 volte gli Strumenti Iniziali per giocatore.'},
+  {section:'inventario', title:'Slot inventario', text:'Max 6 risorse, max 2 Oggetti normali, max 2 Miglioramenti Professione (non scambiabili), Oggetti Epici illimitati, Amici illimitati, Carte Evento illimitate.'},
+  {section:'inventario', title:'Matrimonio', text:'Serve Oggetto Epico Ciondolo della Sirena + 1 Amico con icona matrimonio. Il Coniuge fa 1 Azione per turno (accesso all\'inventario), ma non attiva Effetti Fine Turno.'},
+  {section:'inventario', title:'Tessere Joja', text:'Modificano o bloccano l\'Azione bersaglio. Rimozione (Effetto Fine Turno): scarta 1 Cuore oppure 5 oro.'},
+  {section:'fine', title:'Effetti di Fine Turno', text:'Scegli 1 tipo e attivalo quante volte vuoi: Costruire Scale (Pietre×giocatori → scendi Miniera), Animali Felici (Cuori → lato Felice), Rimuovere Joja (1 Cuore o 5 oro), Migliorare Strumento Iniziale (risorsa indicata).'},
+  {section:'vittoria', title:'Condizioni di vittoria', text:'Completare 4 degli 8 Obiettivi del Nonno E ripristinare 6 Stanze del Centro Comunitario, prima che si esaurisca il Mazzo Stagione.'},
+  {section:'vittoria', title:'Difficoltà Piantare', text:'Solo 4 Obiettivi del Nonno. Nessun requisito Centro Comunitario.'},
+  {section:'vittoria', title:'Difficoltà Contadino Onesto (Standard)', text:'4 Obiettivi del Nonno + 6 Pacchetti Centro Comunitario.'},
+  {section:'vittoria', title:'Difficoltà Artigiano (Avanzata)', text:'4 Obiettivi + 6 Pacchetti + nessuna Tessera Joja sul tabellone all\'inizio.'},
+  {section:'vittoria', title:'Modalità Rapida', text:'2 Carte Stagione per stagione, 2 Obiettivi, 3 Stanze del Centro. Circa 40 minuti per giocatore in versione standard.'},
+  {section:'vittoria', title:'Gioco in Solitario', text:'Stesse regole. Senza limite di Professione iniziale. A Fine Stagione pesca 3 carte Professione e tienine 1.'},
+];
+
+// ===== SEARCH LOGIC =====
+function doSearch(q) {
+  const query = q.trim().toLowerCase();
+  const resultsDiv = document.getElementById('search-results');
+  const sections = document.querySelectorAll('.section:not(#search-results)');
+  const tabs = document.querySelectorAll('.tab');
+
+  if (!query) {
+    resultsDiv.classList.remove('active');
+    resultsDiv.style.display = 'none';
+    // restore active section
+    const activeTab = document.querySelector('.tab.active');
+    if (activeTab) {
+      const id = activeTab.getAttribute('onclick').match(/'([^']+)'/)[1];
+      document.getElementById('sec-' + id).classList.add('active');
+    }
+    return;
+  }
+
+  // hide all sections
+  sections.forEach(s => s.classList.remove('active'));
+  resultsDiv.style.display = 'block';
+  resultsDiv.classList.add('active');
+
+  const words = query.split(/\s+/).filter(w => w.length > 1);
+  const hits = searchData.filter(item => {
+    const haystack = (item.title + ' ' + item.text).toLowerCase();
+    return words.some(w => haystack.includes(w));
+  }).sort((a, b) => {
+    // score: title match = higher
+    const sa = words.filter(w => a.title.toLowerCase().includes(w)).length * 2 +
+               words.filter(w => a.text.toLowerCase().includes(w)).length;
+    const sb = words.filter(w => b.title.toLowerCase().includes(w)).length * 2 +
+               words.filter(w => b.text.toLowerCase().includes(w)).length;
+    return sb - sa;
+  });
+
+  if (!hits.length) {
+    resultsDiv.innerHTML = '<div class="no-results">🌾 Nessun risultato per "<strong>' + escHtml(q) + '</strong>".<br>Prova con: pesca, miniera, animali, round, vittoria...</div>';
+    return;
+  }
+
+  const sectionNames = {round:'Struttura Round',luoghi:'Luoghi & Azioni',pesca:'Pesca',miniera:'Miniera',animali:'Animali',centro:'Centro Comunitario',obiettivi:'Obiettivi',inventario:'Inventario',fine:'Fine Turno',vittoria:'Vittoria'};
+
+  resultsDiv.innerHTML = '<h3 class="sh">🔍 ' + hits.length + ' risultati per "' + escHtml(q) + '"</h3>' +
+    hits.map(item => {
+      const excerpt = highlight(item.text.slice(0, 180) + (item.text.length > 180 ? '…' : ''), words);
+      return `<div class="search-hit" onclick="gotoSection('${item.section}')">
+        <h4>${highlight(item.title, words)} <span style="color:var(--text4);font-size:0.75rem;font-weight:400">· ${sectionNames[item.section]}</span></h4>
+        <p>${excerpt}</p>
+      </div>`;
+    }).join('');
+}
+
+function highlight(text, words) {
+  let out = escHtml(text);
+  words.forEach(w => {
+    const re = new RegExp('(' + escRe(w) + ')', 'gi');
+    out = out.replace(re, '<span class="hit-highlight">$1</span>');
+  });
+  return out;
+}
+
+function gotoSection(id) {
+  document.getElementById('search-input').value = '';
+  const fakeBtn = document.querySelector(`.tab[onclick="showTab('${id}',this)"]`);
+  if (fakeBtn) showTab(id, fakeBtn);
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escRe(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+}
+</script>
+</body>
+</html>
